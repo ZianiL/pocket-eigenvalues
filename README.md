@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 #### USAGE
 ```bash
-python pocket_eigen_ratios.py data/ results.csv
+python pocket_xyz_eigenvalues.py data/ results.csv
 ```
 Where:
 - <input_folder> is the path to a directory containing pocket PDB file(s) (e.g. `data/`)
