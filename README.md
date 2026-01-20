@@ -15,7 +15,7 @@ pip install -r requirements.txt
 #### INPUT
 
 - A directory containing pocket PDB file(s) (one pocket per file).
-- Each pocket is identified by its filename (without the .pdb extension).
+- Each pocket is identified by its filename.
 
 #### USAGE
 ```bash
