@@ -33,6 +33,7 @@ The script produces a CSV file containing the following columns:
 - `Eigval1, Eigval2, Eigval3`: eigenvalues of the coordinate covariance matrix
 - `rEV32, rEV31, rEV21`: eigenvalue ratios
 - `NumAtoms`: number of atoms in the pocket
+- `Rg`: radius of gyration of the pocket
 
 #### EXAMPLE DATA
 
