@@ -23,7 +23,8 @@ def extract_coords(pdb_path, parser):
     return np.array(coords)
 
 def compute_eigen_ratios(coords):
-    """Compute sorted eigenvalues (λ1≥λ2≥λ3) of the coordinate covariance matrix and their ratios."""
+    """Compute sorted eigenvalues (λ1≥λ2≥λ3) of the coordinate covariance matrix,
+    their ratios, and radius of gyration."""
     cov_matrix = np.cov(coords, rowvar=False)
     eigvals = np.linalg.eigvalsh(cov_matrix)
     eigvals = np.sort(eigvals)[::-1]
@@ -33,7 +34,9 @@ def compute_eigen_ratios(coords):
     rEV31 = ev3 / ev1
     rEV21 = ev2 / ev1
 
-    return ev1, ev2, ev3, rEV32, rEV31, rEV21
+    rg = np.sqrt(ev1 + ev2 + ev3)
+
+    return ev1, ev2, ev3, rEV32, rEV31, rEV21, rg
 
 
 def main(pockets_dir, output_csv):
@@ -50,7 +53,7 @@ def main(pockets_dir, output_csv):
         pdb_path = os.path.join(pockets_dir, fname)
 
         coords = extract_coords(pdb_path, parser)
-        ev1, ev2, ev3, rEV32, rEV31, rEV21 = compute_eigen_ratios(coords)
+        ev1, ev2, ev3, rEV32, rEV31, rEV21, rg = compute_eigen_ratios(coords)
 
         rows.append({
             "PocketID": pocket_id,
@@ -61,11 +64,12 @@ def main(pockets_dir, output_csv):
             "rEV31": rEV31,
             "rEV21": rEV21,
             "NumAtoms": len(coords),
+            "Rg": rg
         })
 
     df = pd.DataFrame(rows)
-    df[["Eigval1", "Eigval2", "Eigval3", "rEV32", "rEV31", "rEV21"]] = df[
-        ["Eigval1", "Eigval2", "Eigval3", "rEV32", "rEV31", "rEV21"]
+    df[["Eigval1", "Eigval2", "Eigval3", "rEV32", "rEV31", "rEV21", "Rg"]] = df[
+        ["Eigval1", "Eigval2", "Eigval3", "rEV32", "rEV31", "rEV21", "Rg"]
     ].round(4)
     df.to_csv(output_csv, index=False)
     print(f'CSV successfully generated: "{output_csv}"')
